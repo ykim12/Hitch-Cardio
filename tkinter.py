@@ -20,6 +20,9 @@ def close():
 class Vo2Max(tk.Tk):
 
     def __init__(self, *args, **kwargs):
+        global maxhr
+        global resthr
+        
         tk.Tk.__init__(self, *args, **kwargs)
 
         self.title_font = tkfont.Font(family='Helvetica', size=18, weight="bold", slant="italic")
@@ -33,7 +36,7 @@ class Vo2Max(tk.Tk):
         container.grid_columnconfigure(0, weight=1)
 
         self.frames = {}
-        for F in (StartPage, PageOne, weeklyavg, monthavg1, yearavg1, adddata, datapage):
+        for F in (StartPage, PageOne, weeklyavg, monthavg1, yearavg1, adddata, datapage,VO2Calc):
             page_name = F.__name__
             frame = F(parent=container, controller=self)
             self.frames[page_name] = frame
@@ -84,37 +87,51 @@ class adddata(tk.Frame):
         addmore=tk.Button(tool_bar, text="Add More Data", 
                           command=lambda: controller.show_frame("datapage")).grid(row=4, column=0, padx=5, pady=5)
         exitapp =tk.Button(tool_bar, text="Exit", command=close).grid(row=5, column=0, padx=5, pady=5)
-        '''
-        
 
-        '''
+class VO2Calc(tk.Frame):
+    def __init__(self, parent, controller):
+        tk.Frame.__init__(self, parent)
+        self.controller = controller
+        left_frame = tk.Frame(self, width=200, height=400, bg='grey')
+        left_frame.grid(row=0, column=0, padx=10, pady=5)
+        
+        right_frame = tk.Frame(self, width=650, height=400, bg='grey')
+        right_frame.grid(row=0, column=1, padx=10, pady=5)
+        
+        tk.Label(left_frame, text="Are you in a good shape?").grid(row=0, column=0, padx=5, pady=5)
+        
+        
+        tool_bar = tk.Frame(left_frame, width=180, height=185)
+        tool_bar.grid(row=2, column=0, padx=5, pady=5)
+        
+        tk.Label(tool_bar, text="Tools", font=('Arial', 9, 'bold', 'underline'),relief=RAISED).grid(row=0, column=0, padx=5, pady=3, ipadx=10)
+        backbutton = tk.Button(tool_bar, text = "Back",command=lambda: controller.show_frame("PageOne")).grid(row = 2,column = 0,padx = 5,pady = 5)
+        
+        tk.Label(right_frame, text = "Your VO2Max is: " ).grid(row = 0, column = 0, padx = 5, pady = 5)
         
 class datapage(tk.Frame):
     
     def __init__(self, parent, controller):
         tk.Frame.__init__(self, parent)
         self.controller = controller
-        left_frame = tk.Frame(self, width=200, height=400, bg='grey',
-                              maxlabel = tk.Label(text = "Enter your max heart rate: "),
-                              maxentry = tk.Entry(),
-                              minlabel = tk.Label(text = "Enter your resting heart rate: "),
-                              minentry = tk.Entry(),
-                              maxlabel.pack(),
-                              minlabel.pack(),
-                              maxentry.pack(),
-                              minentry.pack())
-        
-        
+        left_frame = tk.Frame(self, width=200, height=400, bg='grey')
         left_frame.grid(row=0, column=0, padx=10, pady=5)
        
         
         right_frame = tk.Frame(self, width=650, height=400, bg='grey')
         right_frame.grid(row=0, column=1, padx=10, pady=5)
 
-
+        
         # Create frames and labels in left_frame
         tk.Label(left_frame, text="Are you in a good shape?").grid(row=0, column=0, padx=5, pady=5)
         
+        
+        tk.Label(right_frame,text = "Enter your max heart rate: ").grid(row=0, column = 1, padx = 5, pady = 5)
+        maxhr = tk.Entry(right_frame).grid(row = 1, column = 1)
+        tk.Label(right_frame,text = "Enter your resting heart rate: ").grid(row=2, column = 1, padx = 5, pady = 5)
+        resthr = tk.Entry(right_frame).grid(row = 3, column = 1)
+        calculate = tk.Button(right_frame, text = "Calculate",
+                              command = lambda: controller.show_frame("VO2Calc")).grid(row = 4,column = 1,padx = 5,pady = 5)
 
         tk.Label(left_frame).grid(row=1, column=0, padx=50, pady=50)
         # Create tool bar frame
@@ -123,8 +140,9 @@ class datapage(tk.Frame):
 
         # Example labels that serve as placeholders for other widgets
         tk.Label(tool_bar, text="Tools", font=('Arial', 9, 'bold', 'underline'),relief=RAISED).grid(row=0, column=0, padx=5, pady=3, ipadx=10)
+        backbutton = tk.Button(tool_bar, text = "Back",command=lambda: controller.show_frame("PageOne")).grid(row = 2,column = 0,padx = 5,pady = 5)
 
-
+        
 
 class StartPage(tk.Frame):
 
