@@ -8,11 +8,19 @@ Created on Wed Oct 12 08:20:55 2022
 
 from fileinput import close
 from tkinter import RAISED
-
+from math import *
 
 
 import tkinter as tk                # python 3
 from tkinter import font as tkfont  # python 3
+
+
+def calc():
+    mx = maxhr.get()
+    rest = resthr.get()
+    math = tk.Label(right_frame, text = int (maxhr / minhr)**15.3).grid(row = 0, column = 0, padx = 5, pady = 5)
+         
+        
 
 def close():
     app.destroy()
@@ -20,8 +28,7 @@ def close():
 class Vo2Max(tk.Tk):
 
     def __init__(self, *args, **kwargs):
-        global maxhr
-        global resthr
+
         
         tk.Tk.__init__(self, *args, **kwargs)
 
@@ -89,6 +96,8 @@ class adddata(tk.Frame):
         exitapp =tk.Button(tool_bar, text="Exit", command=close).grid(row=5, column=0, padx=5, pady=5)
 
 class VO2Calc(tk.Frame):
+    
+    
     def __init__(self, parent, controller):
         tk.Frame.__init__(self, parent)
         self.controller = controller
@@ -99,6 +108,14 @@ class VO2Calc(tk.Frame):
         right_frame.grid(row=0, column=1, padx=10, pady=5)
         
         tk.Label(left_frame, text="Are you in a good shape?").grid(row=0, column=0, padx=5, pady=5)
+        tk.Label(right_frame,text = "Enter your max heart rate: ").grid(row=0, column = 1, padx = 5, pady = 5)
+        maxhr = tk.Entry(right_frame).grid(row = 1, column = 1)
+        tk.Label(right_frame,text = "Enter your resting heart rate: ").grid(row=2, column = 1, padx = 5, pady = 5)
+        resthr = tk.Entry(right_frame).grid(row = 3, column = 1)
+        calculate = tk.Button(right_frame, text = "Calculate",
+                              command = lambda: controller.show_frame("VO2Calc")).grid(row = 4,column = 1,padx = 5,pady = 5)
+        
+        
         
         
         tool_bar = tk.Frame(left_frame, width=180, height=185)
@@ -107,7 +124,12 @@ class VO2Calc(tk.Frame):
         tk.Label(tool_bar, text="Tools", font=('Arial', 9, 'bold', 'underline'),relief=RAISED).grid(row=0, column=0, padx=5, pady=3, ipadx=10)
         backbutton = tk.Button(tool_bar, text = "Back",command=lambda: controller.show_frame("PageOne")).grid(row = 2,column = 0,padx = 5,pady = 5)
         
-        tk.Label(right_frame, text = "Your VO2Max is: " ).grid(row = 0, column = 0, padx = 5, pady = 5)
+        tk.Label(right_frame, text = "Your VO2Max is: ", command = calc).grid(row = 0, column = 0, padx = 5, pady = 5)
+        
+
+    
+
+    
         
 class datapage(tk.Frame):
     
