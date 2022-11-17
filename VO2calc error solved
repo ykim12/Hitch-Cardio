@@ -1,9 +1,10 @@
 
+
 from fileinput import close
 from tkinter import RAISED
 from math import *
 
-
+import mysql.connector as mysql
 import tkinter as tk                # python 3
 from tkinter import font as tkfont  # python 3
 
@@ -64,12 +65,27 @@ class VO2Calc(tk.Frame):
         right_frame = tk.Frame(self, width=650, height=400, bg='grey')
         right_frame.grid(row=0, column=1, padx=10, pady=5)
         
+        def clear_text():
+            maxhr.delete(0, tk.END)
+            resthr.delete(0, tk.END)
+            
+
         def calc():
             mx = int(maxhr.get())
             rest = int(resthr.get())
-            math = tk.Label(right_frame, text = int (mx / rest)*15.3).grid(row = 5, column = 1, padx = 5, pady = 5)
+            vo2max = int (mx / rest)*15.3
+            math = tk.Label(right_frame, text = vo2max).grid(row = 5, column = 1, padx = 5, pady = 5)
 
         tk.Label(left_frame, text="Are you in a good shape?").grid(row=0, column=0, padx=5, pady=5)
+        
+        tk.Label(right_frame,text = "Enter your max heart rate: ").grid(row=0, column = 1, padx = 5, pady = 5)
+        maxhr = tk.Entry(right_frame)
+        maxhr.grid(row = 1, column = 1)
+        
+        tk.Label(right_frame,text = "Age: ").grid(row=0, column = 1, padx = 5, pady = 5)
+        maxhr = tk.Entry(right_frame)
+        maxhr.grid(row = 1, column = 1)
+
         tk.Label(right_frame,text = "Enter your max heart rate: ").grid(row=0, column = 1, padx = 5, pady = 5)
         maxhr = tk.Entry(right_frame)
         maxhr.grid(row = 1, column = 1)
@@ -78,8 +94,11 @@ class VO2Calc(tk.Frame):
         resthr.grid(row = 3, column = 1)
         calculate = tk.Button(right_frame, text = "Calculate",
                               command = calc).grid(row = 4,column = 1,padx = 5,pady = 5)
+        addmore = tk.Button(right_frame, text="Add more", command=clear_text).grid(row = 6, column =1, padx = 5, pady = 5)
         
-        
+
+
+
         tool_bar = tk.Frame(left_frame, width=180, height=185)
         tool_bar.grid(row=2, column=0, padx=5, pady=5)
         
@@ -103,6 +122,13 @@ class StartPage(tk.Frame):
         label = tk.Label(self, text="Hitch Cardio", font=controller.title_font)
         label.pack(side="top", fill="x", pady=10)
 
+
+        id = tk.Label(self, text = "Enter ID", font = ('bold', 10))
+        id.place(x= 50,y=30)
+        
+        password = tk.Label(self, text = "Password", font = ('bold', 10))
+        password.place(x= 50,y=50)        
+        
         button1 = tk.Button(self, text="Click to see your Vo2 max",
                             command=lambda: controller.show_frame("PageOne"))
 
