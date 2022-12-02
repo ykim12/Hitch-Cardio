@@ -1,0 +1,86 @@
+class VO2Calc(tk.Frame):
+    
+
+            
+        
+    def __init__(self, parent, controller):
+        tk.Frame.__init__(self, parent)
+        self.controller = controller
+        left_frame = tk.Frame(self, width=200, height=400, bg='grey')
+        left_frame.grid(row=0, column=0, padx=10, pady=5)
+        
+        right_frame = tk.Frame(self, width=650, height=400, bg='grey')
+        right_frame.grid(row=0, column=1, padx=10, pady=5)
+        
+        def clear_text():
+            maxhr.delete(0, tk.END)
+            resthr.delete(0, tk.END)
+        
+        vo2maxs = []
+        count = 0
+        def calc():
+            mx = int(maxhr.get())
+            rest = int(resthr.get())
+            vo2max = round(float (mx / rest)*15.3,2)
+            vo2maxs.append(vo2max)
+            math = tk.Label(right_frame, text = vo2max).grid(row = 5, column = 1, padx = 5, pady = 5)
+            if (vo2max > 60):
+                tk.Label(right_frame,text = "Your Vo2Max is excellent!!!").grid(row = 6,column = 1,padx = 5,pady = 5)
+            elif(vo2max >=52) and (vo2max <=60):
+                tk.Label(right_frame,text = "Your vo2 max is good. Keep up the good work").grid(row = 6,column = 1,padx = 5,pady = 5)
+            elif(vo2max>=37) and (vo2max<=51):
+                tk.Label(right_frame,text = "Your vo2 max is average.").grid(row = 6,column = 1,padx = 5,pady = 5)
+            elif(vo2max>=30) and (vo2max <=36):
+                tk.Label(right_frame,text = "Your vo2 max is not good. Try hard to get back on track.").grid(row = 6,column = 1,padx = 5,pady = 5)
+            elif(vo2max<30):
+                tk.Label(right_frame,text = "Your vo2max is very bad. Work hard to get better.").grid(row = 6,column = 1,padx = 5,pady = 5)
+
+
+
+
+            if(len(vo2maxs)>1):
+                # Create a figure of specific size
+                figure = Figure(figsize=(5, 5), dpi=100)
+
+                # Define the points for plotting the figure
+                plot = figure.add_subplot(1, 1, 1)
+
+                x = range(len(vo2maxs))                
+                y = vo2maxs
+                
+                plot.plot(x, y, color="red", marker="x", linestyle="solid")
+                plot.set_xlabel('days')
+                plot.set_ylabel('Vo2Max')
+                figure.tight_layout()
+                # Add a canvas widget to associate the figure with canvas
+                canvas = FigureCanvasTkAgg(figure, right_frame)
+                canvas.get_tk_widget().grid(row=0, column=0)
+
+        tk.Label(left_frame, text="Are you in a good shape?").grid(row=0, column=0, padx=5, pady=5)
+        
+        tk.Label(right_frame,text = "Enter your max heart rate: ").grid(row=0, column = 1, padx = 5, pady = 5)
+        maxhr = tk.Entry(right_frame)
+        maxhr.grid(row = 1, column = 1)
+        
+        tk.Label(right_frame,text = "Age: ").grid(row=0, column = 1, padx = 5, pady = 5)
+        maxhr = tk.Entry(right_frame)
+        maxhr.grid(row = 1, column = 1)
+
+        tk.Label(right_frame,text = "Enter your max heart rate: ").grid(row=0, column = 1, padx = 5, pady = 5)
+        maxhr = tk.Entry(right_frame)
+        maxhr.grid(row = 1, column = 1)
+        tk.Label(right_frame,text = "Enter your resting heart rate: ").grid(row=2, column = 1, padx = 5, pady = 5)
+        resthr = tk.Entry(right_frame)
+        resthr.grid(row = 3, column = 1)
+        calculate = tk.Button(right_frame, text = "Calculate",
+                              command = calc).grid(row = 4,column = 1,padx = 5,pady = 5)
+        addmore = tk.Button(right_frame, text="Add more", command=clear_text).grid(row = 7, column =1, padx = 5, pady = 5)
+        
+
+
+
+        tool_bar = tk.Frame(left_frame, width=180, height=185)
+        tool_bar.grid(row=2, column=0, padx=5, pady=5)
+        
+        tk.Label(tool_bar, text="Tools", font=('Arial', 9, 'bold', 'underline'),relief=RAISED).grid(row=0, column=0, padx=5, pady=3, ipadx=10)
+        backbutton = tk.Button(tool_bar, text = "Back",command=lambda: controller.show_frame("PageOne")).grid(row = 2,column = 0,padx = 5,pady = 5)
