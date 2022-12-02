@@ -1,0 +1,40 @@
+        def calc():
+            mx = int(maxhr.get())
+            rest = int(resthr.get())
+            vo2max = round(float (mx / rest)*15.3,2)
+            vo2maxs.append(vo2max)
+            math = tk.Label(right_frame, text = vo2max).grid(row = 5, column = 1, padx = 5, pady = 5)
+            if (vo2max > 60):
+                tk.Label(right_frame,text = "Your Vo2Max is excellent!!!").grid(row = 6,column = 1,padx = 5,pady = 5)
+            elif(vo2max >=52) and (vo2max <=60):
+                tk.Label(right_frame,text = "Your vo2 max is good. Keep up the good work").grid(row = 6,column = 1,padx = 5,pady = 5)
+            elif(vo2max>=37) and (vo2max<=51):
+                tk.Label(right_frame,text = "Your vo2 max is average.").grid(row = 6,column = 1,padx = 5,pady = 5)
+            elif(vo2max>=30) and (vo2max <=36):
+                tk.Label(right_frame,text = "Your vo2 max is not good. Try hard to get back on track.").grid(row = 6,column = 1,padx = 5,pady = 5)
+            elif(vo2max<30):
+                tk.Label(right_frame,text = "Your vo2max is very bad. Work hard to get better.").grid(row = 6,column = 1,padx = 5,pady = 5)
+
+
+
+            if(len(vo2maxs)>1):
+                def grapher():
+                    # Create a figure of specific size
+                    figure = Figure(figsize=(5, 5), dpi=100)
+
+                    # Define the points for plotting the figure
+                    plot = figure.add_subplot(1, 1, 1)
+
+                    x = range(len(vo2maxs))                
+                    y = vo2maxs
+                    
+                    plot.plot(x, y, color="red", marker="x", linestyle="solid")
+                    plot.set_xlabel('days')
+                    plot.set_ylabel('Vo2Max')
+                    figure.tight_layout()
+                    # Add a canvas widget to associate the figure with canvas
+                    canvas = FigureCanvasTkAgg(figure, right_frame)
+                    canvas.get_tk_widget().grid(row=0, column=0)
+                graphlabel = tk.Label(right_frame,text = "Would you like to see a graph so show your progress?").grid(row = 6,column = 2,padx = 5,pady = 5)
+                graphbutton = tk.Button(right_frame, text = "Graph", command = grapher).grid(row = 7, column = 2,padx = 5,pady = 5)
+
