@@ -1,4 +1,4 @@
-
+from statistics import mean
 
 from fileinput import close
 from tkinter import RAISED
@@ -80,6 +80,16 @@ class VO2Calc(tk.Frame):
             rest = int(resthr.get())
             vo2max = round(float (mx / rest)*15.3,2)
             math = tk.Label(right_frame, text = vo2max).grid(row = 5, column = 1, padx = 5, pady = 5)
+            if (vo2max > 60):
+                tk.Label(right_frame,text = "Your Vo2Max is excellent!!!").grid(row = 6,column = 1,padx = 5,pady = 5)
+            elif(vo2max >=52) and (vo2max <=60):
+                tk.Label(right_frame,text = "Your vo2 max is good. Keep up the good work").grid(row = 6,column = 1,padx = 5,pady = 5)
+            elif(vo2max>=37) and (vo2max<=51):
+                tk.Label(right_frame,text = "Your vo2 max is average.").grid(row = 6,column = 1,padx = 5,pady = 5)
+            elif(vo2max>=30) and (vo2max <=36):
+                tk.Label(right_frame,text = "Your vo2 max is not good. Try hard to get back on track.").grid(row = 6,column = 1,padx = 5,pady = 5)
+            elif(vo2max<30):
+                tk.Label(right_frame,text = "Your vo2max is very bad. Work hard to get better.").grid(row = 6,column = 1,padx = 5,pady = 5)
 
         tk.Label(left_frame, text="Are you in a good shape?").grid(row=0, column=0, padx=5, pady=5)
         
@@ -99,7 +109,7 @@ class VO2Calc(tk.Frame):
         resthr.grid(row = 3, column = 1)
         calculate = tk.Button(right_frame, text = "Calculate",
                               command = calc).grid(row = 4,column = 1,padx = 5,pady = 5)
-        addmore = tk.Button(right_frame, text="Add more", command=clear_text).grid(row = 6, column =1, padx = 5, pady = 5)
+        addmore = tk.Button(right_frame, text="Add more", command=clear_text).grid(row = 7, column =1, padx = 5, pady = 5)
         
 
 
@@ -119,13 +129,6 @@ class StartPage(tk.Frame):
         label = tk.Label(self, text="Hitch Cardio", font=controller.title_font)
         label.pack(side="top", fill="x", pady=50)
 
-
-        id = tk.Label(self, text = "Enter ID", font = ('bold', 15))
-        id.place(x=380, y= 100)
-
-        enterid = tk.Entry(self, width=20)
-        enterid.place(x=350, y= 220)
-        enterid.pack(pady= 5)
         
         signup = tk.Button(self, text = "Signup", command = lambda: controller.show_frame("Signup"))
         signup.place(rely=1.0, relx=1.0, x=0, y=0, anchor="se")
@@ -159,14 +162,12 @@ class Signup(tk.Frame):
 
         # Example labels that serve as placeholders for other widgets
         tk.Label(info, text="Information", font=('Arial', 9, 'bold', 'underline'),relief=RAISED).grid(row = 0, columnspan=2, padx=5, pady=3, ipadx=10)  # ipadx is padding inside the Label widget
-        ID =tk.Label(info, text="ID").grid(row=1, column=0, padx=5, pady=5)
-        EnterID = tk.Entry(info).grid(row = 1, column = 1, padx= 5, pady=5)
 
-        Age = tk.Label(info, text="Age").grid(row=2, column=0, padx=5, pady=5)
-        EnterAge = tk.Entry(info).grid(row = 2, column = 1, padx= 5, pady=5)
+        Age = tk.Label(info, text="Age").grid(row=1, column=0, padx=5, pady=5)
+        EnterAge = tk.Entry(info).grid(row = 1, column = 1, padx= 5, pady=5)
 
-        Gender = tk.Label(info, text="Gender").grid(row=3, column=0, padx=5, pady=5)
-        EnterGender = tk.Entry(info).grid(row = 3, column = 1, padx= 5, pady=5)
+        Gender = tk.Label(info, text="Gender").grid(row=2, column=0, padx=5, pady=5)
+        EnterGender = tk.Entry(info).grid(row = 2, column = 1, padx= 5, pady=5)
 
         #need to store data in MySQL
         tk.Button(info, text="Click to finish and log in", command= lambda: controller.show_frame("StartPage")).grid(row = 4, columnspan =2, padx = 5, pady=5)
@@ -260,8 +261,8 @@ class weeklyavg(tk.Frame):
         monthavg = tk.Button(tool_bar, text="Monthly Average", command=lambda: controller.show_frame("monthavg1")).grid(row=2, column=0, padx=5, pady=5)
         yearavg = tk.Button(tool_bar, text="Yearly Average", command=lambda: controller.show_frame("yearavg1")).grid(row=3, column=0, padx=5, pady=5)
         addmore=tk.Button(tool_bar, text="Add More Data", command=lambda: controller.show_frame("VO2Calc")).grid(row=4, column=0, padx=5, pady=5)
-        coach = tk.Button(tool_bar, text = "Coach Mode", command = lambda: controller.show_frame("coachadddata")).grid(row = 6, column = 0, padx = 5, pady =5)        
-        exitapp =tk. Button(tool_bar, text="Exit", command=close).grid(row=5, column=0, padx=5, pady=5)
+        coach = tk.Button(tool_bar, text = "Coach Mode", command = lambda: controller.show_frame("coachadddata")).grid(row = 5, column = 0, padx = 5, pady =5)        
+        exitapp =tk. Button(tool_bar, text="Exit", command=close).grid(row=6, column=0, padx=5, pady=5)
 
 class monthavg1(tk.Frame):
     
@@ -309,8 +310,8 @@ class monthavg1(tk.Frame):
         weekavg =tk.Button(tool_bar, text="Weekly Average", command=lambda: controller.show_frame("weeklyavg")).grid(row=1, column=0, padx=5, pady=5)
         yearavg = tk.Button(tool_bar, text="Yearly Average", command=lambda: controller.show_frame("yearavg1")).grid(row=3, column=0, padx=5, pady=5)
         addmore=tk.Button(tool_bar, text="Add More Data", command=lambda: controller.show_frame("VO2Calc")).grid(row=4, column=0, padx=5, pady=5)
-        coach = tk.Button(tool_bar, text = "Coach Mode", command = lambda: controller.show_frame("coachadddata")).grid(row = 6, column = 0, padx = 5, pady =5)        
-        exitapp =tk. Button(tool_bar, text="Exit", command=close).grid(row=5, column=0, padx=5, pady=5)
+        coach = tk.Button(tool_bar, text = "Coach Mode", command = lambda: controller.show_frame("coachadddata")).grid(row = 5, column = 0, padx = 5, pady =5)        
+        exitapp =tk. Button(tool_bar, text="Exit", command=close).grid(row=6, column=0, padx=5, pady=5)
 
 class yearavg1(tk.Frame):
     
@@ -360,8 +361,10 @@ class yearavg1(tk.Frame):
         weekavg =tk.Button(tool_bar, text="Weekly Average", command=lambda: controller.show_frame("weeklyavg")).grid(row=1, column=0, padx=5, pady=5)
         monthavg = tk.Button(tool_bar, text="Monthly Average", command=lambda: controller.show_frame("monthavg1")).grid(row=2, column=0, padx=5, pady=5)
         addmore=tk.Button(tool_bar, text="Add More Data", command=lambda: controller.show_frame("VO2Calc")).grid(row=4, column=0, padx=5, pady=5)
-        coach = tk.Button(tool_bar, text = "Coach Mode", command = lambda: controller.show_frame("coachadddata")).grid(row = 6, column = 0, padx = 5, pady =5)        
-        exitapp =tk. Button(tool_bar, text="Exit", command=close).grid(row=5, column=0, padx=5, pady=5)
+        coach = tk.Button(tool_bar, text = "Coach Mode", command = lambda: controller.show_frame("coachadddata")).grid(row = 5
+        
+        , column = 0, padx = 5, pady =5)        
+        exitapp =tk. Button(tool_bar, text="Exit", command=close).grid(row=6, column=0, padx=5, pady=5)
 
 class coachadddata(tk.Frame):
         
@@ -384,8 +387,18 @@ class coachadddata(tk.Frame):
             new.title("Coach's mode")
 
             tk.Label(new, text='Upload Here').pack(pady=10)
+            tk.Label(new, text = "Make sure you have your athlete's resting and max heart rates").pack(pady=0)
+            # tk.Label(new, text = "Enter athlete's name in order separated by comma").pack(pady=10)
 
+            # def command1():
+            #     name = ((names_list.get().split(",")))
+
+            # names_list = StringVar()
             
+            # names = tk.Entry(new, textvariable = names_list).pack(pady=10)
+            # button = Button(new, text="Ok", command=command1).pack(pady = 10)
+
+
             def getExcel ():
                 global df
             
@@ -393,28 +406,75 @@ class coachadddata(tk.Frame):
                 df = pd.read_excel (import_file_path)
                 global bar1
                 x = df['Day']
-                y = df['Vo2Max']
-                z = df['Vo2Max2']
-                a = df['Vo2Max3']
-                figure1 = Figure(figsize=(8,4), dpi=100)
+
+                #athlete 1 rest and max hr
+                resthr1 = df["resthr1"]
+                maxhr1 = df["maxhr1"]
+                a = []
+                for b in range(len(resthr1)):
+                        vo21 = round((maxhr1[b]/resthr1[b])*15.3,3)
+                        a.append(vo21)
+                a_mean = round(mean(a),3)
+
+                #athlete 1 rest and max hr
+                resthr2 = df["resthr2"]
+                maxhr2 = df["maxhr2"]
+                c = []
+                for b in range(len(resthr2)):
+                        vo21 = round((maxhr2[b]/resthr2[b])*15.3,3)
+                        c.append(vo21)
+                c_mean = round(mean(c),3)
+
+                #athlete 1 rest and max hr
+                resthr3 = df["resthr3"]
+                maxhr3 = df["maxhr3"]
+                d = []
+                for b in range(len(resthr3)):
+                        vo21 = round((maxhr3[b]/resthr3[b])*15.3,3)
+                        d.append(vo21)
+                d_mean = round(mean(d),3)
+       
+
+                figure1 = Figure(figsize=(4,4), dpi=100)
                 subplot1 = figure1.add_subplot(111)
                 bar1 = FigureCanvasTkAgg(figure1, new)
                 bar1.get_tk_widget().pack(side=tk.LEFT, fill=tk.BOTH, expand=0)
-                vm1 =subplot1.plot(x, y, color='green',linestyle='dashed', linewidth = 3, marker='x', markerfacecolor='blue', markersize=12)
-                vm2 =subplot1.plot(x, z, color='blue',linestyle='dashed', linewidth = 3, marker='x', markerfacecolor='blue', markersize=12)
-                vm3 =subplot1.plot(x, a, color='red',linestyle='dashed', linewidth = 3, marker='x', markerfacecolor='blue', markersize=12)
+                vm1 =subplot1.plot(x, a, color='green',linestyle='dashed', linewidth = 3, marker='x', markerfacecolor='blue', markersize=12)
+                vm2 =subplot1.plot(x, c, color='blue',linestyle='dashed', linewidth = 3, marker='x', markerfacecolor='blue', markersize=12)
+                vm3 =subplot1.plot(x, d, color='red',linestyle='dashed', linewidth = 3, marker='x', markerfacecolor='blue', markersize=12)
 
-                subplot1.legend([vm1[0],vm2[0],vm3[0]],["Chris", "Trevor", "Yujin"], loc = "upper right")
+                subplot1.legend([vm1[0],vm2[0],vm3[0]],["Yujin", "Chris", "Trevor"], loc = "upper right")
                 subplot1.set_xlabel("Day")
                 subplot1.set_ylabel("Vo2Max")
                 subplot1.set_title("Vo2Max for your athletes")
 
                 figure1.tight_layout()
+                means = [a_mean,c_mean,d_mean]
+                
+                text = ["","",""]
+                
+                for x in range(len(means)):
+                    if (means[x] > 60):
+                        text[x] = " Vo2Max is excellent!!!"
+                    elif(means[x] >=52) and (means[x] <=60):
+                        text[x] = " Vo2 max is good."
+                    elif(means[x]>=37) and (means[x]<=51):
+                        text[x] = " Vo2 max is average."
+                    elif(means[x]>=30) and (means[x] <=36):
+                        text[x] = " Vo2 max is not good. Need to try hard to get back on track."
+                    elif(means[x]<30):
+                        text[x] = " Vo2max is very bad. Need to work hard to get better."
+
+
+
+                canvas = Canvas(new, width = 300, height = 150, bg = "grey")
+                canvas.create_text(150,50,text = f"Yujin's weekly Vo2Max: {a_mean}{text[0]}", fill = "black")
+                canvas.create_text(150,75,text = f"Chris's weekly Vo2Max: {c_mean}{text[1]}", fill = "black")
+                canvas.create_text(150,100,text = f"Trevor's weekly Vo2Max: {d_mean}{text[2]}", fill = "black")
+                canvas.pack()
+                
             tk.Button(new,text='Load File', command=getExcel, bg='grey', fg='white', font=('helvetica', 12, 'bold')).pack(pady=5)
-            
-
             tk.Button (new, text='Go Back', command=new.destroy, bg='grey',fg='white',  font=('helvetica', 11, 'bold')).pack(pady=5)
-
         
         tk.Button(right_frame, text = "Open", command = new_win).grid(row=1, column = 0, padx = 5, pady = 5)
 
